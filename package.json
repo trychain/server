@@ -1,0 +1,52 @@
+{
+  "name": "chain-server",
+  "version": "0.0.0",
+  "description": "google authenticator alternative",
+  "main": "./src/main.ts",
+  "directories": {
+    "doc": "docs",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "jest --watch"
+  },
+  "dependencies": {
+    "@hono/node-server": "^1.13.8",
+    "@hono/zod-validator": "^0.4.3",
+    "drizzle-orm": "^0.40.0",
+    "geoip-lite": "^1.4.10",
+    "hono": "^4.7.4",
+    "lodash": "^4.17.21",
+    "otp-generator": "^4.0.1",
+    "pg": "^8.13.3",
+    "winston": "^3.17.0"
+  },
+  "devDependencies": {
+    "@types/geoip-lite": "^1.4.4",
+    "@types/jest": "^29.5.14",
+    "@types/lodash": "^4.17.16",
+    "@types/node": "^22.13.9",
+    "@types/otp-generator": "^4.0.2",
+    "typescript": "^5.8.2",
+    "drizzle-kit": "^0.30.5",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.2.6",
+    "ts-node": "^10.9.2"
+  },
+  "author": "Abdullah Aly",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/trychain/server.git"
+  },
+  "keywords": [
+    "totp",
+    "otp",
+    "auth",
+    "authenticator"
+  ],
+  "bugs": {
+    "url": "https://github.com/trychain/server/issues"
+  },
+  "homepage": "https://github.com/trychain/server#readme"
+}
