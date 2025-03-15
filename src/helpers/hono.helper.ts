@@ -4,7 +4,7 @@ import { serve } from "@hono/node-server";
 import { HTTPException } from "hono/http-exception";
 
 // helpers
-import { logger } from "../helpers/winston";
+import { logger } from "../helpers/winston.helper";
 
 export function createHonoApp(options: {
   middlewares?: MiddlewareHandler[];
@@ -38,7 +38,7 @@ export function createHonoApp(options: {
 
   app.onError((error: Error | HTTPException, ctx) => {
     const dev =
-      process.env.ENVIRONMENT === "development"
+      process.env.ENVIRONMENT === "DEVELOPMENT" || true
         ? {
             stack: error.stack || "No stack available",
             errorType: error.constructor.name,
@@ -55,10 +55,13 @@ export function createHonoApp(options: {
       );
     }
 
-    return ctx.json({
-      message: error.message,
-      ...dev,
-    });
+    return ctx.json(
+      {
+        message: error.message,
+        ...dev,
+      },
+      500,
+    );
   });
   if (options.debug) {
     logger.info(`error handler loaded`);
@@ -67,12 +70,12 @@ export function createHonoApp(options: {
   serve({
     fetch: app.fetch,
     port: options.port,
-    hostname: options.hostname || "localhost",
+    hostname: options.hostname || "0.0.0.0",
   });
 
   if (options.debug) {
     logger.info(
-      `chain server app started at http://${options.hostname || "localhost"}:${options.port}`,
+      `chain server app started at http://${options.hostname || "127.0.0.1"}:${options.port}`,
     );
   }
 
