@@ -1,11 +1,11 @@
 // helpers
-import { createHonoApp } from "../../src/helpers/hono.helper";
+import { createHonoApp } from "../../../helpers/hono.helper";
 
 // repository
-import { fetchAuthRepository } from "../../src/api/v1/auth/auth.repository";
+import { fetchAuthRepository } from "./auth.repository";
 
 // routes
-import { authRoute } from "../../src/api/v1/auth/auth.route";
+import { authRoute } from "./auth.route";
 
 const env = {
   server: {
