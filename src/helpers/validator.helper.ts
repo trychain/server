@@ -1,5 +1,5 @@
 // packages
-import { ZodSchema } from "zod";
+import { ZodSchema, z } from "zod";
 import type { ValidationTargets } from "hono";
 import { zValidator } from "@hono/zod-validator";
 import { HTTPException } from "hono/http-exception";
@@ -17,11 +17,10 @@ export const validate = <
     }
   });
 
-export const body = <T extends ZodSchema>(schema: T) =>
-  validate("json", schema);
-
-export const header = <T extends ZodSchema>(schema: T) =>
-  validate("header", schema);
-
-export const param = <T extends ZodSchema>(schema: T) =>
-  validate("param", schema);
+export const body = (schema: any) => validate("json", z.object({ ...schema }));
+export const header = (schema: any) =>
+  validate("header", z.object({ ...schema }));
+export const param = (schema: any) =>
+  validate("param", z.object({ ...schema }));
+export const query = (schema: any) =>
+  validate("query", z.object({ ...schema }));

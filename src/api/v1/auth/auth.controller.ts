@@ -13,14 +13,14 @@ import {
   createAuthRepository,
   deleteAuthRepository,
   fetchAuthRepository,
-  createSessionRepository,
 } from "./auth.repository";
 import { fetchOrCreateUserRepository } from "../user/user.repository";
+import { createSessionRepository } from "../session/session.repository";
 
 export const authFactory = createFactory();
 
-export const createAuthHandler = authFactory.createHandlers(async (ctx) => {
-  const { email } = await ctx.req.json<{ email: string }>();
+export const createAuthController = authFactory.createHandlers(async (ctx) => {
+  const { email } = ctx.req.valid("json" as never);
   const connInfo = getConnInfo(ctx);
 
   const geoDetails = getGeoDetails(connInfo.remote.address!);
@@ -50,7 +50,7 @@ export const createAuthHandler = authFactory.createHandlers(async (ctx) => {
   );
 });
 
-export const verifyAuthHandler = authFactory.createHandlers(async (ctx) => {
+export const verifyAuthController = authFactory.createHandlers(async (ctx) => {
   const { id } = ctx.req.param<any>();
   const { password } = await ctx.req.json<{ password: string }>();
 

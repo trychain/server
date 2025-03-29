@@ -1,23 +1,24 @@
 // pacakges
-import { createMiddleware } from "hono/factory";
+import { createFactory } from "hono/factory";
 import { verify as jwtVerify } from "hono/jwt";
 import { HTTPException } from "hono/http-exception";
 
 // repositories
-import { fetchSessionRepository } from "./auth.repository";
+import { fetchSessionRepository } from "../session/session.repository";
+
+export const authMiddleware = createFactory();
 
 export const authMiddlewareHandler = (options: { roles?: string[] }) =>
-  createMiddleware(async (ctx, next) => {
-    const authorization = ctx.req.header("authorization");
+  authMiddleware.createMiddleware(async (ctx, next) => {
+    const { authorization } = ctx.req.valid("header" as never) as any;
     if (!authorization) {
       throw new HTTPException(401, { message: "AUTH_REQUIRED" });
     }
 
     const [, token] = authorization.split(" ");
-    const payload = await jwtVerify(
-      token,
-      process.env.JWT_SECRET!,
-    ).catch(() => null);
+    const payload = await jwtVerify(token, process.env.JWT_SECRET!).catch(
+      () => null,
+    );
 
     if (!payload) {
       throw new HTTPException(401, { message: "AUTH_REQUIRED" });
@@ -37,6 +38,6 @@ export const authMiddlewareHandler = (options: { roles?: string[] }) =>
       }
     }
 
-    ctx.set("session", session);
+    ctx.set("session" as any, session);
     await next();
   });

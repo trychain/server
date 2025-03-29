@@ -1,5 +1,5 @@
 // packages
-import { eq, or } from "drizzle-orm";
+import { and, eq, or } from "drizzle-orm";
 import generateOtp from "otp-generator";
 
 // helpers
@@ -62,49 +62,6 @@ export async function deleteAuthRepository(options: { id: string }) {
     .delete(authTable)
     .where(eq(authTable.id, options.id))
     .returning();
-
-  return query[0];
-}
-
-export async function createSessionRepository(options: {
-  userId: string;
-  ip: string;
-  country: string;
-  city: string;
-}) {
-  const query = await db
-    .insert(sessionTable)
-    .values({
-      userId: options.userId,
-      ip: options.ip,
-      country: options.country,
-      city: options.city,
-    })
-    .returning()
-    .onConflictDoNothing();
-
-  return query[0];
-}
-
-export async function fetchSessionRepository(options: { id?: string }) {
-  const query = await db
-    .select({
-      id: sessionTable.id,
-      ip: sessionTable.ip,
-      country: sessionTable.country,
-      city: sessionTable.city,
-      user: {
-        id: userTable.id,
-        email: userTable.email,
-        firstName: userTable.firstName,
-        lastName: userTable.lastName,
-        avatarUrl: userTable.avatarUrl,
-        roles: userTable.roles,
-      },
-    })
-    .from(sessionTable)
-    .where(eq(sessionTable.id, options.id!))
-    .innerJoin(userTable, eq(sessionTable.userId, userTable.id));
 
   return query[0];
 }
